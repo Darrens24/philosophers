@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:29:32 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:21:14 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:07:52 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,14 @@ int	get_mutex(t_data *data)
 	int	i;
 
 	pthread_mutex_init(&data->speaking_stick, NULL);
+	pthread_mutex_init(&data->race, NULL);
+	pthread_mutex_init(&data->vic, NULL);
 	data->forks_t = malloc(sizeof(pthread_mutex_t) * data->nb_of_philo);
 	if (!data->forks_t)
 		return (printf("Forks: Memory allocation failed\n"));
 	i = -1;
 	while (++i < data->nb_of_philo)
 		pthread_mutex_init(&(data->forks_t[i]), NULL);
-	data->is_eating_t = malloc(sizeof(pthread_mutex_t) * data->nb_of_philo);
-	if (!data->is_eating_t)
-		return (printf("Eatmutex: Memory allocation failed\n"));
-	i = -1;
-	while (++i < data->nb_of_philo)
-		pthread_mutex_init(&(data->is_eating_t[i]), NULL);
 	return (0);
 }
 
@@ -88,27 +84,9 @@ int	odd_thread_creation(t_data *data)
 	i = -1;
 	while (++i < data->nb_of_philo)
 	{
-		*(data->index) = i;
 		if (pthread_create(&(data->philo_t[i]), NULL,
 				&philo_manager, data) != 0)
 			return (printf("Thread philo creation failed\n"));
-		usleep(12);
-	}
-	return (0);
-}
-
-int	even_thread_creation(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < data->nb_of_philo)
-	{
-		*(data->index) = i;
-		if (pthread_create(&(data->philo_t[i]), NULL,
-				&philo_manager, data) != 0)
-			return (printf("Thread philo creation failed\n"));
-		usleep(12);
 	}
 	return (0);
 }

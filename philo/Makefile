@@ -2,7 +2,7 @@ NAME = philo
 
 CC = gcc
 
-CFLAGS = -fsanitize=thread -Wall -Wextra -Werror -I ./
+CFLAGS = -Wall -Wextra -Werror -I ./
 
 SRC = utils.c \
 		errors.c \
@@ -18,7 +18,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ -lpthread
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f $(OBJ)

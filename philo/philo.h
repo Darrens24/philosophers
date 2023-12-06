@@ -6,12 +6,21 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:31:27 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:06:14 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 14:41:56 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define BLK "\e[0;90m"
+# define RED "\e[0;91m"
+# define GRN "\e[0;92m"
+# define YEL "\e[0;93m"
+# define BLU "\e[0;94m"
+# define MAG "\e[0;95m"
+# define CYN "\e[0;96m"
+# define WHT "\e[0;97m"
 
 # include <unistd.h>
 # include <stdio.h>
@@ -21,7 +30,7 @@
 # include <stdint.h>
 # include <sys/time.h>
 
-//	Structures	//
+/***\	Structures		\***/
 
 typedef struct s_data
 {
@@ -37,6 +46,8 @@ typedef struct s_data
 	pthread_mutex_t	*forks_t;
 	pthread_mutex_t	*is_eating_t;
 	pthread_mutex_t	speaking_stick;
+	pthread_mutex_t	race;
+	pthread_mutex_t	vic;
 	int				*actual_meal;
 	struct timeval	start;
 	struct timeval	current;

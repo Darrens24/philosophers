@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:40:44 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:20:39 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:08:35 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,24 @@ void	free_data(t_data *data)
 
 	i = -1;
 	while (++i < data->nb_of_philo)
-	{
-		pthread_mutex_destroy(&data->forks_t[i]);
-		pthread_mutex_destroy(&data->is_eating_t[i]);
-	}
-	pthread_mutex_destroy(&data->speaking_stick);
+		pthread_mutex_unlock(&data->forks_t[i]);
+	while (++i < data->nb_of_philo)
+		if (pthread_mutex_destroy(&data->forks_t[i]) != 0)
+			printf("Fork %d destruction failed\n", i);
+	if (pthread_mutex_destroy(&data->speaking_stick) != 0)
+		printf("Stick destruction failed\n");
+	pthread_mutex_unlock(&data->race);
+	if (pthread_mutex_destroy(&data->race) != 0)
+		printf("Race destruction failed\n");
+	if (pthread_mutex_destroy(&data->vic) != 0)
+		printf("Vic destruction failed\n");
 	free(data->philo);
 	free(data->index);
 	free(data->last_meal);
 	free(data->actual_meal);
 	free(data->philo_t);
-	free(data->is_eating_t);
 	free(data->victory);
 	free(data->forks_t);
-	free(data->deathwatcher_t);
 	free(data);
 }
 

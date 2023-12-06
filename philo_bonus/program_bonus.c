@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:04:04 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:34:31 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:55:56 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ void	philo_manager(t_data *data, int index)
 
 void	odd_philo_routine(t_data *data, int index)
 {
-	while (data->death == 0)
+	while (1)
 	{
 		philo_eats(data, index);
+		sem_wait(data->sema_victory);
 		data->victory += 1;
+		sem_post(data->sema_victory);
 		philo_sleeps(data, index);
 		philo_thinks(data, index);
 	}

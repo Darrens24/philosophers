@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:31:33 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:19:12 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:10:49 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,52 @@ int	check_is_dead(t_data *data, int index)
 int	check_is_victory(t_data *data)
 {
 	int	i;
+	int	race_nb_philo;
+	int	*race_victory;
+	int	race_meal;
 
+	i = -1;
+	pthread_mutex_lock(&data->vic);
+	race_nb_philo = data->nb_of_philo;
+	race_victory = malloc(sizeof(int) * race_nb_philo);
+	while (++i < race_nb_philo)
+		race_victory[i] = data->victory[i];
+	race_meal = data->victory_meal;
+	pthread_mutex_unlock(&data->vic);
 	i = 0;
-	while (i < data->nb_of_philo)
+	while (i < race_nb_philo)
 	{
-		if (data->victory[i] < data->victory_meal)
+		if (race_victory[i] < race_meal)
+		{
+			free(race_victory);
 			return (0);
+		}
 		i++;
 	}
+	free(race_victory);
 	return (1);
 }
 
 void	print_success_and_join(t_data *data)
 {
 	pthread_mutex_lock(&data->speaking_stick);
+	pthread_mutex_lock(&data->race);
 	data->death = 1;
-	usleep(120);
+	pthread_mutex_unlock(&data->race);
+	usleep(300);
 	green();
-	printf("%lld  SUCCESS\n", timestamp(data));
+	printf(GRN "%lld  SUCCESS\n" WHT, timestamp(data));
 	reset();
-	pthread_join(*(data->deathwatcher_t), NULL);
 	pthread_mutex_unlock(&data->speaking_stick);
 }
 
 void	print_failure_and_join(t_data *data, int index)
 {
 	pthread_mutex_lock(&data->speaking_stick);
+	pthread_mutex_lock(&data->race);
 	data->death = 1;
-	usleep(120);
-	red();
-	printf("%lld %d died\n", timestamp(data), data->philo[index] + 1);
-	reset();
-	pthread_join(*(data->deathwatcher_t), NULL);
+	pthread_mutex_unlock(&data->race);
+	usleep(300);
+	printf(RED "%lld %d died\n" WHT, timestamp(data), index + 1);
 	pthread_mutex_unlock(&data->speaking_stick);
 }

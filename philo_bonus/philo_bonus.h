@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:38:01 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:33:03 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:21:38 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_data
 	sem_t			*sema_speaking;
 	sem_t			*sema_forks;
 	sem_t			*sema_death;
+	sem_t			*sema_victory;
 	struct timeval	start;
 	struct timeval	current;
 	struct timeval	*last_meal;

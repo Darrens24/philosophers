@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:03:53 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/24 15:47:33 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:43:04 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ void	kill_processes_free_data(t_data *data)
 	sem_unlink("Sem");
 	sem_unlink("Speak");
 	sem_unlink("Death");
+	sem_unlink("Victory");
 	sem_close(data->sema_forks);
 	sem_close(data->sema_speaking);
 	sem_close(data->sema_death);
+	sem_close(data->sema_victory);
 	free(data);
 }
 
@@ -73,8 +75,10 @@ int	get_semaphores(t_data *data)
 	sem_unlink("Sem");
 	sem_unlink("Speak");
 	sem_unlink("Death");
+	sem_unlink("Victory");
 	data->sema_forks = sem_open("Sem", O_CREAT, 0644, data->nb_of_philo);
 	data->sema_speaking = sem_open("Speak", O_CREAT, 0644, 1);
 	data->sema_death = sem_open("Death", O_CREAT, 0644, 1);
+	data->sema_victory = sem_open("Victory", O_CREAT, 0644, 1);
 	return (0);
 }

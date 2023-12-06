@@ -6,7 +6,7 @@
 /*   By: eleleux <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:04:07 by eleleux           #+#    #+#             */
-/*   Updated: 2023/01/26 13:29:34 by eleleux          ###   ########.fr       */
+/*   Updated: 2023/05/12 16:58:45 by eleleux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*deathwatcher_job(void *arg)
 			print_failure_and_exit(data, data->index);
 			exit(EXIT_FAILURE);
 		}
-		else if (check_is_victory(data) && data->victory_meal > 0)
+		else if (data->victory_meal > 0 && check_is_victory(data))
 		{
 			print_success_and_exit(data);
 			exit(EXIT_SUCCESS);
@@ -48,12 +48,18 @@ int	check_is_dead(t_data *data, int index)
 
 int	check_is_victory(t_data *data)
 {
-	int	i;
+	long long	i;
+	long long	race_nb_philo;
+	long long	race_victory;
+	long long	race_meal;
 
+	race_nb_philo = data->nb_of_philo;
+	race_victory = data->victory;
+	race_meal = data->victory_meal;
 	i = 0;
-	while (i < data->nb_of_philo)
+	while (i < race_nb_philo)
 	{
-		if (data->victory < data->victory_meal)
+		if (race_victory < race_meal)
 			return (0);
 		i++;
 	}
